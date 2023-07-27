@@ -51,8 +51,9 @@ class Post(models.Model):
         max_length=MAX_EXCERPT_LEN,
     )
 
-    image_name = models.CharField(
-        max_length=MAX_IMAGE_NAME_LEN,
+    image = models.ImageField(
+        upload_to='posts',
+        null=True,
     )
 
     date = models.DateField(
@@ -80,4 +81,27 @@ class Post(models.Model):
 
     tags = models.ManyToManyField(
         Tag,
+    )
+
+    def __str__(self):
+        return f'{self.title}'
+
+
+class Comment(models.Model):
+    MAX_USERNAME_LEN = 120
+    MAX_TEXT_LEN = 400
+
+    user_name = models.CharField(
+        max_length=MAX_USERNAME_LEN,
+    )
+
+    user_email = models.EmailField()
+    text = models.TextField(
+        max_length=MAX_TEXT_LEN,
+    )
+
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments',
     )

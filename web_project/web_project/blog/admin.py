@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from web_project.blog.models import Post, Author, Tag
+from web_project.blog.models import Post, Author, Tag, Comment
 
 
 @admin.register(Post)
@@ -20,3 +20,8 @@ class AuthorAdmin(admin.ModelAdmin):
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     pass
+
+
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = ('user_name', 'post')
