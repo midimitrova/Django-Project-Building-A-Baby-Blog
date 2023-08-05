@@ -53,11 +53,15 @@ class Post(models.Model):
 
     image = models.ImageField(
         upload_to='posts',
-        null=True,
+        null=False,
+        blank=False,
+
     )
 
     date = models.DateField(
-        auto_now=True,
+        # auto_now=True,
+        null=False,
+        blank=False,
     )
 
     slug = models.SlugField(
@@ -105,3 +109,4 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
     )
+

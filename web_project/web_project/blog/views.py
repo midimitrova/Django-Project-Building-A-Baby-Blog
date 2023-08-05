@@ -1,8 +1,9 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import ListView
 from django.views import View
-from .forms import CommentForm
+from .forms import CommentForm, PostForm
 from .models import Post
 
 
@@ -17,6 +18,23 @@ class StartingPageView(ListView):
         data = queryset[:3]
         return data
 
+@login_required
+def add_post(request):
+    if request.method == 'GET':
+        form = PostForm()
+    else:
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = request.user
+            post.save()
+
+            return redirect('posts-page', pk=1)
+
+    context = {
+        'form': PostForm(),
+    }
+    return render(request, 'blog/add-post.html', context)
 
 class AllPostsView(ListView):
     template_name = 'blog/all-posts.html'
