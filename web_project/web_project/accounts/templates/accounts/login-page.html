@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load forms %}
 {% load static %}
 
 {% block title %}
@@ -16,8 +17,8 @@
 
             <form action="{% url 'login-user' %}" method="post">
                 {% csrf_token %}
-                {{ form.username }}
-                {{ form.password }}
+                {{ form.username|placeholder:'Enter Usename: ' }}
+                {{ form.password|placeholder:'Enter Password: ' }}
 
                 <input type="hidden" value="{{ next }}" name="next" />
 

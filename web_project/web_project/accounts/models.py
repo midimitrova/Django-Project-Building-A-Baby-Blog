@@ -8,7 +8,6 @@ from django.contrib.auth import models as auth_models
 def validate_only_alphabetical(value):
     pass
 
-
 class ChoicesMixin(Enum):
     @classmethod
     def choices(cls):
@@ -37,6 +36,7 @@ class BlogUser(auth_models.AbstractUser):
         max_length=MAX_FIRST_NAME_LEN,
         validators=(
             validators.MinLengthValidator(MIN_FIRST_NAME_LEN),
+            validate_only_alphabetical,
         ),
     )
 

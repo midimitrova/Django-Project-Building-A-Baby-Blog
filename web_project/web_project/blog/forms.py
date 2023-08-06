@@ -17,13 +17,14 @@ class CommentForm(forms.ModelForm):
 class PostBaseForm(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('title', 'excerpt', 'image', 'date', 'content')
+        fields = ('title', 'excerpt', 'image', 'date', 'content', 'author')
         labels = {
             'title': 'Post Title',
             'excerpt': 'Excerpt',
             'image': 'Image',
             'date': 'Date',
-            'content': 'Post Content',
+            'content': 'Content',
+            'author': 'Author',
         }
         widgets = {
             'title': forms.TextInput(
@@ -40,7 +41,7 @@ class PostBaseForm(forms.ModelForm):
 
             'image': forms.URLInput(
                 attrs={
-                    'placeholder': 'Image',
+                    'placeholder': 'Image URL',
                 }
             ),
 
@@ -53,11 +54,17 @@ class PostBaseForm(forms.ModelForm):
 
             'content': forms.Textarea(
                 attrs={
-                    'placeholder': 'Post content'
+                    'placeholder': 'Post Content'
                 }
             ),
+
+            'author': forms.TextInput(
+                attrs={
+                    'placeholder': 'Author Name'
+                }
+            )
         }
 
 
-class PostForm(PostBaseForm):
+class PostCreateForm(PostBaseForm):
     pass
