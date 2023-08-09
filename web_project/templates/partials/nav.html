@@ -6,7 +6,7 @@
     {% if request.user.is_authenticated %}
 
         <a href="{% url 'read-later' %}">Stored Posts</a>
-        <a href="#">Profile</a>
+        <a href="{% url 'profile-details-user' request.user.pk %}">Profile</a>
         <a href="{% url 'logout-user' %}">Logout</a>
 
     {% else %}

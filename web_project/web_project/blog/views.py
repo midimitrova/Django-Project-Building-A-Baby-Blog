@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse
 from django.views.generic import ListView
 from django.views import View
-from .forms import CommentForm, PostForm
+from .forms import CommentForm, PostCreateForm
 from .models import Post
 
 
@@ -18,12 +18,13 @@ class StartingPageView(ListView):
         data = queryset[:3]
         return data
 
+
 @login_required
 def add_post(request):
     if request.method == 'GET':
-        form = PostForm()
+        form = PostCreateForm()
     else:
-        form = PostForm(request.POST)
+        form = PostCreateForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
             post.user = request.user
@@ -32,9 +33,10 @@ def add_post(request):
             return redirect('posts-page', pk=1)
 
     context = {
-        'form': PostForm(),
+        'form': PostCreateForm(),
     }
     return render(request, 'blog/add-post.html', context)
+
 
 class AllPostsView(ListView):
     template_name = 'blog/all-posts.html'
