@@ -1,10 +1,12 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from django.urls import reverse
-from django.views.generic import ListView
+from django.urls import reverse, reverse_lazy
+from django.views.generic import ListView, CreateView
 from django.views import View
 from .forms import CommentForm, PostCreateForm
 from .models import Post
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class StartingPageView(ListView):
@@ -19,23 +21,45 @@ class StartingPageView(ListView):
         return data
 
 
-@login_required
-def add_post(request):
-    if request.method == 'GET':
-        form = PostCreateForm()
-    else:
-        form = PostCreateForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = request.user
-            post.save()
+class PostAddView(LoginRequiredMixin, CreateView):
+    template_name = 'blog/add-post.html'
+    form_class = PostCreateForm
 
-            return redirect('posts-page', pk=1)
+    def get_success_url(self):
+        return reverse('post-detail-page', kwargs={
+            'pk': self.object.pk,
+        })
 
-    context = {
-        'form': PostCreateForm(),
-    }
-    return render(request, 'blog/add-post.html', context)
+    # def get_form(self, *args, **kwargs):
+    #     form = super().get_form(*args, **kwargs)
+    #     form.user = self.request.user
+    #     return form
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.user = self.request.user
+        self.object.save()
+
+        return super().form_valid(form)
+
+
+# @login_required
+# def add_post(request):
+#     if request.method == 'GET':
+#         form = PostCreateForm()
+#     else:
+#         form = PostCreateForm(request.POST)
+#         if form.is_valid():
+#             post = form.save(commit=False)
+#             post.user = request.user
+#             post.save()
+#
+#             return redirect('posts-page', pk=1)
+#
+#     context = {
+#         'form': PostCreateForm(),
+#     }
+#     return render(request, 'blog/add-post.html', context)
 
 
 class AllPostsView(ListView):
@@ -55,28 +79,28 @@ class SinglePostView(View):
 
         return is_saved_for_later
 
-    def get(self, request, slug):
-        post = Post.objects.get(slug=slug)
+    def get(self, request, pk):
+        post = Post.objects.get(pk=pk)
 
         context = {
             'post': post,
             'post_tags': post.tags.all(),
             'comment_form': CommentForm(),
             'comments': post.comments.all().order_by('-id'),
-            'saved_for_later': self.is_stored_post(request, post.id),
+            'saved_for_later': self.is_stored_post(request, post.pk),
         }
         return render(request, 'blog/post-detail.html', context)
 
-    def post(self, request, slug):
+    def post(self, request, pk):
         comment_form = CommentForm(request.POST)
-        post = Post.objects.get(slug=slug)
+        post = Post.objects.get(pk=pk)
 
         if comment_form.is_valid():
             comment = comment_form.save(commit=False)
             comment.post = post
             comment.save()
 
-            return redirect(reverse('post-detail-page', args=[slug]))
+            return redirect(reverse('post-detail-page', args=[pk]))
 
         context = {
             'post': post,
@@ -89,7 +113,7 @@ class SinglePostView(View):
         return render(request, 'blog/post-detail.html', context)
 
 
-class ReadLaterView(View):
+class ReadLaterView(LoginRequiredMixin, View):
     def get(self, request):
         stored_posts = request.session.get('stored_posts')
 

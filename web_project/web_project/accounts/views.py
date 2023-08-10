@@ -6,20 +6,12 @@ from django.views import generic as views
 from django.contrib.auth import views as auth_views, get_user_model
 from django.contrib.auth import authenticate, login, logout
 
-from web_project.accounts.forms import RegisterUserForm
+from web_project.accounts.forms import RegisterUserForm, UserEditForm
 
 UserModel = get_user_model()
 
 
-class OnlyAnonymousMixin:
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return HttpResponse(self.get_success_url())
-
-        return super().dispatch(request, *args, **kwargs)
-
-
-class RegisterUserView(OnlyAnonymousMixin, views.CreateView):
+class RegisterUserView(views.CreateView):
     template_name = 'accounts/register-page.html'
     form_class = RegisterUserForm
     success_url = reverse_lazy('starting-page')
@@ -72,7 +64,14 @@ class ProfileDetailsView(views.DetailView):
 
 class ProfileEditView(views.UpdateView):
     template_name = 'accounts/profile-edit.html'
+    model = UserModel
+    form_class = UserEditForm
+
+    def get_success_url(self):
+        return reverse_lazy('profile-details-user', kwargs={'pk': self.object.pk})
 
 
 class ProfileDeleteView(views.DeleteView):
     template_name = 'accounts/profile-delete.html'
+    model = UserModel
+    success_url = reverse_lazy('starting-page')

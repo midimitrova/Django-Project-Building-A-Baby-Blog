@@ -1,6 +1,10 @@
+from django.contrib.auth import get_user_model
 from django.core import validators
 
 from django.db import models
+from django.utils.text import slugify
+
+UserModel = get_user_model()
 
 
 class Tag(models.Model):
@@ -41,7 +45,7 @@ class Post(models.Model):
     MAX_TITLE_LEN = 150
     MAX_EXCERPT_LEN = 200
     MAX_IMAGE_NAME_LEN = 100
-    MIN_CONTENT_LEN = 10
+    MAX_CONTENT_LEN = 1000
 
     title = models.CharField(
         max_length=MAX_TITLE_LEN,
@@ -51,10 +55,11 @@ class Post(models.Model):
         max_length=MAX_EXCERPT_LEN,
     )
 
-    image = models.ImageField(
-        upload_to='posts',
+    image = models.URLField(
+
         null=False,
         blank=False,
+
 
     )
 
@@ -65,14 +70,15 @@ class Post(models.Model):
     )
 
     slug = models.SlugField(
-        unique=True,
-        db_index=True,
+        # unique=True,
+        # db_index=True,
+        null=False,
+        blank=True,
+        # unique=True,
     )
 
     content = models.TextField(
-        validators=(
-            validators.MinLengthValidator(MIN_CONTENT_LEN),
-        ),
+        max_length=MAX_CONTENT_LEN,
 
     )
 
@@ -87,8 +93,21 @@ class Post(models.Model):
         Tag,
     )
 
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
+
     def __str__(self):
         return f'{self.title}'
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+        if not self.slug:
+            self.slug = slugify(f'{self.title}')
+
+        return super().save(*args, **kwargs)
 
 
 class Comment(models.Model):
@@ -109,4 +128,8 @@ class Comment(models.Model):
         on_delete=models.CASCADE,
         related_name='comments',
     )
-
+    #
+    # user = models.ForeignKey(
+    #     UserModel,
+    #     on_delete=models.DO_NOTHING,
+    # )

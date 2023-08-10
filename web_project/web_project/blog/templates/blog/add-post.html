@@ -16,9 +16,9 @@
     <div class="edit-delete edit-photo">
         <h2>Add Post</h2>
 
-        <form action="{% url 'add-post' %}" method="post">
+        <form action="{% url 'add-post'  %}" method="post">
             {% csrf_token %}
-            {{ form.as_p }}
+            {{ form.as_p}}
 
 
             <button class="add-btn" type="submit">Add Post</button>

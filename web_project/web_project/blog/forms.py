@@ -15,6 +15,8 @@ class CommentForm(forms.ModelForm):
 
 
 class PostBaseForm(forms.ModelForm):
+
+
     class Meta:
         model = Post
         fields = ('title', 'excerpt', 'image', 'date', 'content', 'author')
@@ -52,17 +54,19 @@ class PostBaseForm(forms.ModelForm):
                 }
             ),
 
+
             'content': forms.Textarea(
                 attrs={
-                    'placeholder': 'Post Content'
-                }
+                    'placeholder': 'Add Content...',
+                },
             ),
 
-            'author': forms.TextInput(
-                attrs={
-                    'placeholder': 'Author Name'
-                }
-            )
+            # 'author': forms.TextInput(
+            #     attrs={
+            #         'placeholder': 'Author Name'
+            #     }
+            # )
+
         }
 
 
