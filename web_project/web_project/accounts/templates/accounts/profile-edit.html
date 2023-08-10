@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block css_files %}
+    <link rel="stylesheet" href="{% static 'accounts/profile-edit-delete.css' %}">
+{% endblock %}
+
+{% block content %}
+    <main>
+        <div class="edit-delete">
+            <h2>Edit Profile</h2>
+            <form action="{% url 'profile-edit-user' pk=object.pk %}" method="post">
+                {% for field in form %}
+                    <p class="error"> {{ field.errors }} </p>
+                    <div class="label-input">
+                        <label>{{ field.label }}</label>
+                        {% if not field.label == "Gender:" %}
+                            {{ field }}
+                        {% else %}
+                            <div class="list-choice">
+                                <div class="list-choice-title">Gender</div>
+                                <div class="list-choice-objects">
+                                    {% for type, value in form.fields.gender.choices %}
+                                        <label>
+                                            <input type="radio" value="{{ value }}" name="gender"
+                                                    {% if form.gender.value == value %}
+                                                   checked
+                                                    {% endif %}/>
+                                            <span>{{ value }}</span>
+                                        </label>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <br>
+                {% endfor %}
+                <button class="edit-btn" type="submit">Edit</button>
+                {% csrf_token %}
+            </form>
+        </div>
+    </main>
+{% endblock %}
