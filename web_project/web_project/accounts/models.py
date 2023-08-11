@@ -4,9 +4,8 @@ from django.db import models
 from django.core import validators
 from django.contrib.auth import models as auth_models
 
+from web_project.accounts.validators import validate_only_alphabetical
 
-def validate_only_alphabetical(value):
-    pass
 
 class ChoicesMixin(Enum):
     @classmethod

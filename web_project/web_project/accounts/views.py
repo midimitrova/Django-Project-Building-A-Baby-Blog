@@ -1,5 +1,6 @@
+
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.views import generic as views
@@ -7,6 +8,7 @@ from django.contrib.auth import views as auth_views, get_user_model
 from django.contrib.auth import authenticate, login, logout
 
 from web_project.accounts.forms import RegisterUserForm, UserEditForm
+
 
 UserModel = get_user_model()
 
@@ -52,12 +54,14 @@ class ProfileDetailsView(views.DetailView):
     def get_context_data(self, **kwargs):
         profile_image = static('images/person.png')
 
+
         if self.object.profile_picture is not None:
             profile_image = self.object.profile_picture
 
         context = super().get_context_data(**kwargs)
 
         context['profile_image'] = profile_image
+        context['posts_count'] = self.object.post_set.count()
 
         return context
 

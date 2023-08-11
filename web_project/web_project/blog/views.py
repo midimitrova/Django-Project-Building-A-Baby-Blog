@@ -5,7 +5,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import ListView, CreateView
 from django.views import View
 from .forms import CommentForm, PostCreateForm
-from .models import Post
+from .models import Post, Author
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 
@@ -30,36 +30,12 @@ class PostAddView(LoginRequiredMixin, CreateView):
             'pk': self.object.pk,
         })
 
-    # def get_form(self, *args, **kwargs):
-    #     form = super().get_form(*args, **kwargs)
-    #     form.user = self.request.user
-    #     return form
-
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.user = self.request.user
         self.object.save()
 
         return super().form_valid(form)
-
-
-# @login_required
-# def add_post(request):
-#     if request.method == 'GET':
-#         form = PostCreateForm()
-#     else:
-#         form = PostCreateForm(request.POST)
-#         if form.is_valid():
-#             post = form.save(commit=False)
-#             post.user = request.user
-#             post.save()
-#
-#             return redirect('posts-page', pk=1)
-#
-#     context = {
-#         'form': PostCreateForm(),
-#     }
-#     return render(request, 'blog/add-post.html', context)
 
 
 class AllPostsView(ListView):

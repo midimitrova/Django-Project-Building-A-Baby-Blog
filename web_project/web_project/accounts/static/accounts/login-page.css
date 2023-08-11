@@ -5,6 +5,7 @@
 
 .login-register-div {
 	margin-top: 13%;
+
 }
 
 .login-register-box, .second-option {
@@ -17,6 +18,7 @@
 	border-radius: 3px;
 	border: 1px solid;
 	box-shadow: 1px 2px 3px #888888;
+
 }
 
 .login-register-box h1 {

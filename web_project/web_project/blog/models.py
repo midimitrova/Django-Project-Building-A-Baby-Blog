@@ -34,6 +34,10 @@ class Author(models.Model):
 
     )
 
+    user = models.OneToOneField(
+        UserModel,
+        on_delete=models.CASCADE,
+    )
     def full_name(self):
         return f'{self.first_name} {self.last_name}'
 
@@ -45,7 +49,7 @@ class Post(models.Model):
     MAX_TITLE_LEN = 150
     MAX_EXCERPT_LEN = 200
     MAX_IMAGE_NAME_LEN = 100
-    MAX_CONTENT_LEN = 1000
+    MAX_CONTENT_LEN = 100000
 
     title = models.CharField(
         max_length=MAX_TITLE_LEN,
@@ -70,11 +74,9 @@ class Post(models.Model):
     )
 
     slug = models.SlugField(
-        # unique=True,
-        # db_index=True,
         null=False,
         blank=True,
-        # unique=True,
+        unique=True,
     )
 
     content = models.TextField(

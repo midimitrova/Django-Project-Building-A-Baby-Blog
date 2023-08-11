@@ -19,7 +19,7 @@ class PostBaseForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ('title', 'excerpt', 'image', 'date', 'content', 'author')
+        fields = ('title', 'excerpt', 'image', 'date', 'content', 'tags')
         labels = {
             'title': 'Post Title',
             'excerpt': 'Excerpt',
@@ -61,11 +61,6 @@ class PostBaseForm(forms.ModelForm):
                 },
             ),
 
-            # 'author': forms.TextInput(
-            #     attrs={
-            #         'placeholder': 'Author Name'
-            #     }
-            # )
 
         }
 
