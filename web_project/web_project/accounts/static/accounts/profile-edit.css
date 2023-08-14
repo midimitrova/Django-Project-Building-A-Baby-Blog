@@ -6,54 +6,21 @@
 }
 
 
-/*.delete-profile {*/
-/*    margin-top: 25vh;*/
-/*    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu,*/
-/*    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;*/
-/*}*/
+.edit-delete {
+    margin: 10% 10%;
+    font-family: -apple-system, system-ui, "Segoe UI", Roboto, Oxygen, Ubuntu,
+    Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    border: 1px solid rgb(156, 152, 152);
+    padding: 40px;
+    border-radius: 3px;
+    border: 1px solid;
+    box-shadow: 1px 2px 3px #888888;
+}
 
-/*.delete-profile h1 {*/
-/*    z-index: 3;*/
-/*}*/
-
-/*.sure-buttons {*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    gap: 30px;*/
-/*    margin-top: 20px;*/
-/*    z-index: 2;*/
-/*}*/
-
-/*.sure-buttons button, .sure-buttons a {*/
-/*    padding: 5px 10px 5px 10px;*/
-/*    border: none;*/
-/*    border-radius: 3px;*/
-/*    color: white;*/
-/*    font-weight: bold;*/
-/*    font-size: 16px;*/
-/*    cursor: pointer;*/
-/*    box-shadow: 2px 3px #888888;*/
-/*    z-index: 2;*/
-/*}*/
-
-/*.sure-buttons button {*/
-/*    background-color: red;*/
-/*}*/
-
-/*.sure-buttons button:hover, .sure-buttons a:hover {*/
-/*    box-shadow: none;*/
-/*}*/
-
-/*.sure-buttons a {*/
-/*    background-color: green;*/
-/*}*/
-
-/*.delete-profile img {*/
-/*    margin-top: -140px;*/
-/*    margin-left: -60px;*/
-/*    position: absolute;*/
-/*    z-index: -1;*/
-/*}*/
+.edit-delete h2 {
+    text-align: inherit;
+    margin-bottom: 20px;
+}
 
 .list-choice {
     font-family: 'Raleway', sans-serif;
@@ -167,6 +134,20 @@ label {
     text-align: left;
 }
 
-#id_tagged_pets {
-    height: 82px;
+
+.edit-btn {
+    padding: 5px 10px 5px 10px;
+    border: none;
+    border-radius: 3px;
+    color: white;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 2px 3px #888888;
+    z-index: 2;
 }
+
+.edit-btn {
+    background-color: green;
+}
+

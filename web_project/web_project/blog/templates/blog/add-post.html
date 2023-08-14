@@ -13,17 +13,39 @@
 
 
 
-    <div class="edit-delete edit-photo">
+    <div class="edit-delete">
         <h2>Add Post</h2>
-
         <form action="{% url 'add-post' %}" method="post">
-            {% csrf_token %}
-            {{ form.as_div }}
+            {% for field in form %}
+                <p class="error"> {{ field.errors }} </p>
+                <div class="label-input">
+                    <label>{{ field.label }}</label>
+                    {% if not field.label == "Tags:" %}
+                        {{ field }}
+                    {% else %}
+                        <div class="list-choice">
+                            <div class="list-choice-title">Tags</div>
+                            <div class="list-choice-objects">
+                                {% for type, value in form.fields.tags.choices %}
+                                    <label>
+                                        <input type="radio" value="{{ value }}" name="tags"
+                                                {% if form.tags.value == value %}
+                                               checked
+                                                {% endif %}/>
+                                        <span>{{ value }}</span>
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <br>
+            {% endfor %}
 
 
 
             <button class="add-btn" type="submit">Add Post</button>
-
+            {% csrf_token %}
         </form>
 
 
