@@ -1,3 +1,4 @@
+from django.core.exceptions import ValidationError
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -25,7 +26,7 @@ class RegisterUserView(views.CreateView):
             user = self.object
             login(self.request, user)
 
-        except IntegrityError:
+        except ValidationError:
             form.add_error('username', 'Username or email already exists.')
 
         return result
