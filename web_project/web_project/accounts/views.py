@@ -1,4 +1,4 @@
-
+from django.db import IntegrityError
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.templatetags.static import static
@@ -20,9 +20,13 @@ class RegisterUserView(views.CreateView):
 
     def form_valid(self, form):
         result = super().form_valid(form)
-        user = self.object
 
-        login(self.request, user)
+        try:
+            user = self.object
+            login(self.request, user)
+
+        except IntegrityError:
+            form.add_error('username', 'Username or email already exists.')
 
         return result
 

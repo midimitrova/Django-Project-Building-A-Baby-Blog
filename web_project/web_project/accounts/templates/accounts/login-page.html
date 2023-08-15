@@ -17,6 +17,9 @@
 
             <form action="{% url 'login-user' %}" method="post">
                 {% csrf_token %}
+
+                {{ form.non_field_errors }}
+
                 {{ form.username|placeholder:'Enter Usename: ' }}
                 {{ form.password|placeholder:'Enter Password: ' }}
 

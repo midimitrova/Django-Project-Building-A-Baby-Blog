@@ -20,7 +20,17 @@
             <form action="{% url 'register-user' %}" method="post">
                 {% csrf_token %}
                 {{ form.username|placeholder:'Enter Username: ' }}
+
+                {% if form.errors.username %}
+                    <p class="error">{{ form.errors.username }}</p>
+                {% endif %}
+
                 {{ form.email|placeholder:'Enter Email: ' }}
+
+                {% if form.errors.email %}
+                    <p class="error">{{ form.errors.email }}</p>
+                {% endif %}
+
                 {{ form.password1|placeholder:'Enter Password: ' }}
                 {{ form.password2|placeholder:'Repeat Password: ' }}
 
